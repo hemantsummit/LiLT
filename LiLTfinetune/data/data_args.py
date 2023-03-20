@@ -73,7 +73,6 @@ class DataTrainingArguments:
         default=False,
         metadata={"help": "Whether to return all the entity levels during evaluation or just the overall ones."},
     )
-    data_dir: str = field(default=None, metadata={"help": "dir to dataset"})
 
 
 @dataclass
