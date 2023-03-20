@@ -42,11 +42,11 @@ class XfunReTrainer(FunsdTrainer):
         inputs = self._prepare_inputs(inputs)
 
         with torch.no_grad():
-            if self.use_amp:
-                with autocast():
-                    outputs = model(**inputs)
-            else:
-                outputs = model(**inputs)
+            # if self.use_amp:
+            #     with autocast():
+            #         outputs = model(**inputs)
+            # else:
+            outputs = model(**inputs)
         labels = tuple(inputs.get(name) for name in self.label_names)
         return outputs, labels
 
