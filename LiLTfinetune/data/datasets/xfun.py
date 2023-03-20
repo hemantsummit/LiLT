@@ -11,7 +11,7 @@ from transformers import AutoTokenizer
 
 _URL = "https://github.com/doc-analysis/XFUN/releases/download/v1.0/"
 
-_LANG = ["zh", "de", "es", "fr", "en", "it", "ja", "pt"]
+_LANG = ["en"]
 logger = logging.getLogger(__name__)
 
 
@@ -69,42 +69,42 @@ class XFUN(datasets.GeneratorBasedBuilder):
             supervised_keys=None,
         )
 
-    # def _split_generators(self, dl_manager):
-    #     """Returns SplitGenerators."""
-    #     # urls_to_download = {
-    #     #     "train": [f"{_URL}{self.config.lang}.train.json", f"{_URL}{self.config.lang}.train.zip"],
-    #     #     "val": [f"{_URL}{self.config.lang}.val.json", f"{_URL}{self.config.lang}.val.zip"],
-    #     #     # "test": [f"{_URL}{self.config.lang}.test.json", f"{_URL}{self.config.lang}.test.zip"],
-    #     # }
-    #     # downloaded_files = dl_manager.download_and_extract(urls_to_download)
-    #     # train_files_for_many_langs = [downloaded_files["train"]]
-    #     # val_files_for_many_langs = [downloaded_files["val"]]
-    #     # # test_files_for_many_langs = [downloaded_files["test"]]
-    #     file_dir = 'xfund&funsd/'
-    #     train_files_for_many_langs = [[file_dir+f"{self.config.lang}.train.json", file_dir+f"{self.config.lang}"]]
-    #     val_files_for_many_langs = [[file_dir+f"{self.config.lang}.val.json", file_dir+f"{self.config.lang}"]]
+    def _split_generators(self, dl_manager):
+        """Returns SplitGenerators."""
+        # urls_to_download = {
+        #     "train": [f"{_URL}{self.config.lang}.train.json", f"{_URL}{self.config.lang}.train.zip"],
+        #     "val": [f"{_URL}{self.config.lang}.val.json", f"{_URL}{self.config.lang}.val.zip"],
+        #     # "test": [f"{_URL}{self.config.lang}.test.json", f"{_URL}{self.config.lang}.test.zip"],
+        # }
+        # downloaded_files = dl_manager.download_and_extract(urls_to_download)
+        # train_files_for_many_langs = [downloaded_files["train"]]
+        # val_files_for_many_langs = [downloaded_files["val"]]
+        # # test_files_for_many_langs = [downloaded_files["test"]]
+        file_dir = 'xfund&funsd/'
+        train_files_for_many_langs = [[file_dir+f"{self.config.lang}.train.json", file_dir+f"{self.config.lang}"]]
+        val_files_for_many_langs = [[file_dir+f"{self.config.lang}.val.json", file_dir+f"{self.config.lang}"]]
 
-    #     if self.config.additional_langs:
-    #         additional_langs = self.config.additional_langs.split("+")
-    #         if "all" in additional_langs:
-    #             additional_langs = [lang for lang in _LANG if lang != self.config.lang]
-    #         for lang in additional_langs:
-    #             # urls_to_download = {"train": [f"{_URL}{lang}.train.json", f"{_URL}{lang}.train.zip"]}
-    #             # additional_downloaded_files = dl_manager.download_and_extract(urls_to_download)
-    #             # train_files_for_many_langs.append(additional_downloaded_files["train"])
-    #             train_files_for_many_langs.append([file_dir+f"{lang}.train.json", file_dir+f"{lang}"])
+        if self.config.additional_langs:
+            additional_langs = self.config.additional_langs.split("+")
+            if "all" in additional_langs:
+                additional_langs = [lang for lang in _LANG if lang != self.config.lang]
+            for lang in additional_langs:
+                # urls_to_download = {"train": [f"{_URL}{lang}.train.json", f"{_URL}{lang}.train.zip"]}
+                # additional_downloaded_files = dl_manager.download_and_extract(urls_to_download)
+                # train_files_for_many_langs.append(additional_downloaded_files["train"])
+                train_files_for_many_langs.append([file_dir+f"{lang}.train.json", file_dir+f"{lang}"])
 
 
-    #     logger.info(f"Training on {self.config.lang} with additional langs({self.config.additional_langs})")
-    #     logger.info(f"Evaluating on {self.config.lang}")
-    #     logger.info(f"Testing on {self.config.lang}")
-    #     return [
-    #         datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={"filepaths": train_files_for_many_langs}),
-    #         datasets.SplitGenerator(
-    #             name=datasets.Split.VALIDATION, gen_kwargs={"filepaths": val_files_for_many_langs}
-    #         ),
-    #         # datasets.SplitGenerator(name=datasets.Split.TEST, gen_kwargs={"filepaths": test_files_for_many_langs}),
-    #     ]
+        logger.info(f"Training on {self.config.lang} with additional langs({self.config.additional_langs})")
+        logger.info(f"Evaluating on {self.config.lang}")
+        logger.info(f"Testing on {self.config.lang}")
+        return [
+            datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={"filepaths": train_files_for_many_langs}),
+            datasets.SplitGenerator(
+                name=datasets.Split.VALIDATION, gen_kwargs={"filepaths": val_files_for_many_langs}
+            ),
+            # datasets.SplitGenerator(name=datasets.Split.TEST, gen_kwargs={"filepaths": test_files_for_many_langs}),
+        ]
 
     def _generate_examples(self, filepaths):
         for filepath in filepaths:
