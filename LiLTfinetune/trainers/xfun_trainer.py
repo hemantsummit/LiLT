@@ -30,7 +30,7 @@ class XfunSerTrainer(FunsdTrainer):
 class XfunReTrainer(FunsdTrainer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.label_names.append("relations")
+        self.label_names.append("relations")
 
     def prediction_step(
         self,
