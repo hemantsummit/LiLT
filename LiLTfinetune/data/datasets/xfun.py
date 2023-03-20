@@ -72,7 +72,7 @@ class XFUN(datasets.GeneratorBasedBuilder):
     def _split_generators(self, dl_manager):
         """Returns SplitGenerators."""
 
-        file_dir = "xfund&funsd"
+        file_dir = "xfund&funsd/"
         
         train_files_for_many_langs = [[file_dir + f"{self.config.lang}.train.json", file_dir + f"{self.config.lang}"]]
         val_files_for_many_langs = [[file_dir + f"{self.config.lang}.val.json", file_dir + f"{self.config.lang}"]]
