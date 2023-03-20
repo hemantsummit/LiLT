@@ -11,7 +11,7 @@ from transformers import AutoTokenizer
 
 _URL = "https://github.com/doc-analysis/XFUN/releases/download/v1.0/"
 
-_LANG = ["en"]
+_LANG = ["zh", "de", "es", "fr", "en", "it", "ja", "pt"]
 logger = logging.getLogger(__name__)
 
 
@@ -72,8 +72,8 @@ class XFUN(datasets.GeneratorBasedBuilder):
     def _split_generators(self, dl_manager):
         """Returns SplitGenerators."""
 
-        file_dir = self.config.data_dir
-
+        file_dir = "xfund&funsd"
+        
         train_files_for_many_langs = [[file_dir + f"{self.config.lang}.train.json", file_dir + f"{self.config.lang}"]]
         val_files_for_many_langs = [[file_dir + f"{self.config.lang}.val.json", file_dir + f"{self.config.lang}"]]
 
