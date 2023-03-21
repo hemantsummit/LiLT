@@ -43,11 +43,11 @@ class XfunReTrainer(FunsdTrainer):
 
         with torch.no_grad():
             # print(self.cuda)
-            if self.amp.is_enabled:
-                with autocast():
-                    outputs = model(**inputs)
-            else:
-                outputs = model(**inputs)
+            # if self.amp.is_enabled:
+            #     with autocast():
+            #         outputs = model(**inputs)
+            # else:
+            outputs = model(**inputs)
         labels = tuple(inputs.get(name) for name in self.label_names)
         return outputs, labels
 
