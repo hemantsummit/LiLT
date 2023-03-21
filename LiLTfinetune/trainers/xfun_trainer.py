@@ -42,7 +42,7 @@ class XfunReTrainer(FunsdTrainer):
         inputs = self._prepare_inputs(inputs)
 
         with torch.no_grad():
-            if self.use_amp:
+            if self.scaler.enabled:
                 with autocast():
                     outputs = model(**inputs)
             else:
