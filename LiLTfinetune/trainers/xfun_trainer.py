@@ -30,7 +30,7 @@ class XfunSerTrainer(FunsdTrainer):
 class XfunReTrainer(FunsdTrainer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.label_names.append("relations")
+        self.label_names.append("relations")
 
     def prediction_step(
         self,
@@ -41,8 +41,12 @@ class XfunReTrainer(FunsdTrainer):
     ) -> Tuple[Optional[float], Optional[torch.Tensor], Optional[torch.Tensor]]:
         inputs = self._prepare_inputs(inputs)
 
-        
-        outputs = model(**inputs)
+        with torch.no_grad():
+            if self.use_amp:
+                with autocast():
+                    outputs = model(**inputs)
+            else:
+                outputs = model(**inputs)
         labels = tuple(inputs.get(name) for name in self.label_names)
         return outputs, labels
 
@@ -92,7 +96,7 @@ class XfunReTrainer(FunsdTrainer):
         entities = None
         for step, inputs in enumerate(dataloader):
             outputs, labels = self.prediction_step(model, inputs, prediction_loss_only, ignore_keys=ignore_keys)
-            re_labels = labels[0] if re_labels is None else re_labels + labels[0]
+            re_labels = labels[1] if re_labels is None else re_labels + labels[1]
             pred_relations = (
                 outputs.pred_relations if pred_relations is None else pred_relations + outputs.pred_relations
             )
