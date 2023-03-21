@@ -43,7 +43,7 @@ class XfunReTrainer(FunsdTrainer):
 
         with torch.no_grad():
             print(self.cuda)
-            if self.scaler.enabled:
+            if self.amp.is_enabled:
                 with autocast():
                     outputs = model(**inputs)
             else:
