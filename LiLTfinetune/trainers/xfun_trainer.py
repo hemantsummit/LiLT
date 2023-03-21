@@ -30,7 +30,7 @@ class XfunSerTrainer(FunsdTrainer):
 class XfunReTrainer(FunsdTrainer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.label_names.append("relations")
+        self.label_names.append("relations")
 
     def prediction_step(
         self,
@@ -42,12 +42,11 @@ class XfunReTrainer(FunsdTrainer):
         inputs = self._prepare_inputs(inputs)
 
         with torch.no_grad():
-            # print(self.cuda)
-            # if self.amp.is_enabled:
-            #     with autocast():
-            #         outputs = model(**inputs)
-            # else:
-            outputs = model(**inputs)
+            if self.use_amp:
+                with autocast():
+                    outputs = model(**inputs)
+            else:
+                outputs = model(**inputs)
         labels = tuple(inputs.get(name) for name in self.label_names)
         return outputs, labels
 
